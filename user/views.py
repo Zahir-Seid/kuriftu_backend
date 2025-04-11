@@ -23,7 +23,7 @@ router = Router(tags=["User account"])
 
 
 @router.post("/register", response=UserOutSchema)
-async def register_user(request: HttpRequest, data: UserRegisterSchema):
+def register_user(request: HttpRequest, data: UserRegisterSchema):
     if User.objects.filter(email=data.email).exists():
         raise HttpError(400, "User with this email already exists.")
 
@@ -49,17 +49,16 @@ async def register_user(request: HttpRequest, data: UserRegisterSchema):
     )
 
     login(request, user)
-    return user
+    return {"message": "Registration successful."} 
 
 
-@router.post("/login", response=UserOutSchema)
-async def login_user(request: HttpRequest, data: UserLoginSchema):
+@router.post("/login") #, response=UserOutSchema | add this if user info is wanted 
+def login_user(request: HttpRequest, data: UserLoginSchema):
     user = authenticate(request, email=data.email, password=data.password)
     if not user:
         raise HttpError(401, "Invalid credentials")
     login(request, user)
-    return user
-
+    return {"message": "Login successful"}
 
 @router.post("/logout")
 async def logout_user(request: HttpRequest):
