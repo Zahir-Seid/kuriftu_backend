@@ -69,7 +69,7 @@ async def logout_user(request: HttpRequest):
 
 
 @router.post("/password-reset/request")
-async def request_password_reset(request, data: PasswordResetRequestSchema):
+def request_password_reset(request, data: PasswordResetRequestSchema):
     user = User.objects.filter(email=data.email).first()
     if not user:
         raise HttpError(404, "No user found with this email.")
@@ -79,7 +79,7 @@ async def request_password_reset(request, data: PasswordResetRequestSchema):
 
 
 @router.post("/password-reset/confirm")
-async def confirm_password_reset(request, data: PasswordResetConfirmSchema):
+def confirm_password_reset(request, data: PasswordResetConfirmSchema):
     reset = PasswordResetCode.objects.filter(code=data.code).first()
 
     if not reset:
@@ -98,14 +98,14 @@ async def confirm_password_reset(request, data: PasswordResetConfirmSchema):
 
 
 @router.get("/profile", response=UserOutSchema)
-async def get_profile(request: HttpRequest):
+def get_profile(request: HttpRequest):
     if not request.user.is_authenticated:
         raise HttpError(401, "Authentication required")
     return request.user
 
 
 @router.put("/profile", response=UserOutSchema)
-async def update_profile(request: HttpRequest, data: UserUpdateSchema):
+def update_profile(request: HttpRequest, data: UserUpdateSchema):
     if not request.user.is_authenticated:
         raise HttpError(401, "Authentication required")
     for field, value in data.dict(exclude_unset=True).items():
@@ -114,7 +114,7 @@ async def update_profile(request: HttpRequest, data: UserUpdateSchema):
     return request.user
 
 @router.delete("/profile/", response={200: dict, 401: dict})
-async def delete_profile(request):
+def delete_profile(request):
     if not request.user.is_authenticated:
         return 401, {"error": "Authentication required"}
     
@@ -122,7 +122,7 @@ async def delete_profile(request):
     return 200, {"message": "Your account has been deleted successfully."}
 
 @router.get("/newsletter/status", response=NewsletterStatusSchema)
-async def get_newsletter_status(request: HttpRequest):
+def get_newsletter_status(request: HttpRequest):
     if not request.user.is_authenticated:
         raise HttpError(401, "Authentication required")
     newsletter = Newsletter.objects.filter(user=request.user).first()
@@ -133,7 +133,7 @@ async def get_newsletter_status(request: HttpRequest):
     }
 
 @router.post("/newsletter/unsubscribe", response=NewsletterStatusSchema)
-async def unsubscribe_newsletter(request: HttpRequest):
+def unsubscribe_newsletter(request: HttpRequest):
     if not request.user.is_authenticated:
         raise HttpError(401, "Authentication required")
 
@@ -156,7 +156,7 @@ async def unsubscribe_newsletter(request: HttpRequest):
 
 
 @router.get("/tier", response={200: TierOutSchema, 401: dict})
-async def get_user_tier(request):
+def get_user_tier(request):
     if not request.user.is_authenticated:
         return 401, {"error": "Authentication required"}
     
