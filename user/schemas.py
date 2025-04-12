@@ -10,6 +10,7 @@ class UserRegisterSchema(BaseModel):
     middle_name: Optional[str] = None
     last_name: str
     birthdate: Optional[date] = None
+    #identity_card: str # we might use this since hotels use identity card something
     referred_by_code: Optional[str] = None  # referral code (optional)
 
 
@@ -34,6 +35,7 @@ class UserOutSchema(BaseModel):
     middle_name: Optional[str]
     last_name: str
     profile_image: Optional[str]
+    identity_card: Optional[str]
     birthdate: Optional[date]
     points: int
     total_spent: float

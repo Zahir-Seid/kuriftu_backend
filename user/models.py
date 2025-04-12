@@ -91,12 +91,10 @@ class Newsletter(models.Model):
     def __str__(self):
         return f"{self.user.email} - {'Subscribed' if self.is_subscribed else 'Unsubscribed'}"
 
-
-'''
 class EngagementLog(models.Model):
     ACTION_REFERRAL = "referral_signup"
     ACTION_BOOKING = "completed_booking"
-    ACTION_FAMILY = "family_booking",
+    ACTION_FAMILY = "family_booking"  
     ACTION_COMBO = "combo_experience"
     ACTION_BIRTHDAY = "birthday_claim"
     ACTION_LOTTERY = "lottery_play"
@@ -132,4 +130,3 @@ class EngagementLog(models.Model):
             EngagementLog.ACTION_LOTTERY: 40,
             EngagementLog.ACTION_FAMILY: 100,
         }.get(action, 0)
-'''    
